@@ -22,31 +22,6 @@ var getTweets = function() {
     
 }
 
-var getArtist = function(artist) {
-    return artist.name;
-}
-
-var getSpotify = function(songName) {   
-    
-    var spotify = new Spotify(keys.spotifyKeys);
-    
-    spotify.search({ type: 'track', query: 'songName' }, function(err, data) {
-        if (err) {
-            console.log('Error occurred: ' + err);
-            return;
-        }
-        
-        var songs = data.tracks.items;
-		for (var i = 0; i < songs.length; i++) {
-            console.log(i);
-            console.log('artist(s) ' + songs[i].artists.map(getArtistNames));
-            console.log('song name: ' + songs[i].name);
-            console.log('preview song: ' + songs[i].preview_url);
-            console.log('album: ' + songs[i].album.name);
-        }
-    });
-}
-
 var getMovie = function(movieName) {
     
     request('http://www.omdbapi.com/?t=' + movieName + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
@@ -68,7 +43,32 @@ var getMovie = function(movieName) {
 });
 }
 
-/* var doWhatItSays = function() {
+var getArtist = function(artist) {
+    return artist.name;
+}
+
+var getSpotify = function(songName) {   
+    
+    var client = new Spotify(keys.spotifyKeys);
+    
+    Spotify.search({ type: 'track', query: 'songName' }, function(err, data) {
+        if (err) {
+            console.log('Error occurred: ' + err);
+            return;
+        }
+        
+        var songs = data.tracks.items;
+		for (var i = 0; i < songs.length; i++) {
+            console.log(i);
+            console.log('artist(s) ' + songs[i].artists.map(getArtistNames));
+            console.log('song name: ' + songs[i].name);
+            console.log('preview song: ' + songs[i].preview_url);
+            console.log('album: ' + songs[i].album.name);
+        }
+    });
+}
+
+ var doWhatItSays = function() {
     
     fs.readFile('random.txt', 'utf8', function (err, data) {
         if (err) throw err;
@@ -76,12 +76,12 @@ var getMovie = function(movieName) {
         var dataArr = data.split(',');
         
         if (dataArr.length == 2) {
-            pick(dataArr[0], dataArr[1]);
+            choice(dataArr[0], dataArr[1]);
         } else if (dataArr.length == 1) {
-            pick(dataArr[0]);
+            choice(dataArr[0]);
         }
     });
-} */
+} 
 
 var choice = function(caseData, functionData) {
     switch(caseData) {
@@ -93,8 +93,9 @@ var choice = function(caseData, functionData) {
         break;
         case 'movie-this':
         getMovie(functionData);
-        //case 'do-what-it-says':
-        // doWhatItSays();
+        case 'do-what-it-says':
+        break;
+        doWhatItSays();
         break;
         default:
         console.log('LIRI cannot do that');
