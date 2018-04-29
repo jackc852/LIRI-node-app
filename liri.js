@@ -49,9 +49,9 @@ var getArtist = function(artist) {
 
 var getSpotify = function(songName) {   
     
-    var client = new Spotify(keys.spotifyKeys);
+    var spotify = new Spotify(keys.spotifyKeys);
     
-    Spotify.search({ type: 'track', query: 'songName' }, function(err, data) {
+    spotify.search({ type: 'track', query: 'songName' }, function(err, data) {
         if (err) {
             console.log('Error occurred: ' + err);
             return;
@@ -60,7 +60,7 @@ var getSpotify = function(songName) {
         var songs = data.tracks.items;
 		for (var i = 0; i < songs.length; i++) {
             console.log(i);
-            console.log('artist(s) ' + songs[i].artists.map(getArtistNames));
+            console.log('artist(s): ' + songs[i].artists.map(getArtistNames));
             console.log('song name: ' + songs[i].name);
             console.log('preview song: ' + songs[i].preview_url);
             console.log('album: ' + songs[i].album.name);
